@@ -50,18 +50,12 @@ func (t *Technology) EnableTethering(ssid string, psk string) error {
 		return err
 	}
 
-	properties, err := db.Call("GetProperties")
-	if err != nil {
-		log.Printf("Error: %v", err)
-		return err
-	}
-	fmt.Printf("Properties: %v\n", properties)
 	if len(ssid) > 0 {
 		log.Printf("Setting up TetheringIdentifier: %v\n", ssid)
 		db.Set("TetheringIdentifier", ssid)
 		log.Printf("Setting up TetheringIdentifier: Successfully\n")
 	}
-	if len(psk) > 0 {
+	if len(psk) > 8 {
 		log.Printf("Setting up TetheringPassphrase: %v\n", psk)
 		db.Set("TetheringPassphrase", psk)
 		log.Printf("Setting up TetheringPassphrase: Successfully\n")
