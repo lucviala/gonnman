@@ -8,14 +8,14 @@ import (
 )
 
 type Technology struct {
-	Path                dbus.ObjectPath
-	Name                string
-	Type                string
-	Powered             bool
-	Connected           bool
-	Tethering           bool
-	TetheringIdentifier string
-	TetheringPassphrase string
+	Path                dbus.ObjectPath `json:"path"`
+	Name                string          `json:"name"`
+	Type                string          `json:"type"`
+	Powered             bool            `json:"powered"`
+	Connected           bool            `json:"connected"`
+	Tethering           bool            `json:"tethering"`
+	TetheringIdentifier string          `json:"tethering_identifier,omitempty"`
+	TetheringPassphrase string          `json:"tethering_passphrase,omitempty"`
 }
 
 func (t *Technology) Enable() error {
@@ -55,12 +55,12 @@ func (t *Technology) EnableTethering(ssid string, psk string) error {
 		db.Set("TetheringIdentifier", ssid)
 		log.Printf("Setting up TetheringIdentifier: Successfully\n")
 	}
-	if len(psk) > 8 {
+	if len(psk) > 8 && len(psk) < 64 {
 		log.Printf("Setting up TetheringPassphrase: %v\n", psk)
 		db.Set("TetheringPassphrase", psk)
 		log.Printf("Setting up TetheringPassphrase: Successfully\n")
 	} else {
-		return fmt.Errorf("Passphrase too short: %v", psk)
+		return fmt.Errorf("Passphrase too short or too long: %v", psk)
 	}
 	log.Printf("Enabling tethering: %v - %v\n", ssid, psk)
 	return db.Set("Tethering", true)

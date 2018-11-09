@@ -7,69 +7,69 @@ import (
 )
 
 type IPv4Config struct {
-	Method  string
-	Address string
-	Netmask string
-	Gateway string
+	Method  string `json:"method,omitempty"`
+	Address string `json:"address,omitempty"`
+	Netmask string `json:"netmask,omitempty"`
+	Gateway string `json:"gateway,omitempty"`
 }
 
 type IPv6Config struct {
-	Method       string
-	Address      string
-	PrefixLength uint8
-	Gateway      string
-	Privacy      string
+	Method       string `json:"method,omitempty"`
+	Address      string `json:"address,omitempty"`
+	PrefixLength uint8  `json:"prefix_length"`
+	Gateway      string `json:"gateway,omitempty"`
+	Privacy      string `json:"privacy,omitempty"`
 }
 
 type EthConfig struct {
-	Method    string
-	Interface string
-	Address   string
-	MTU       uint16
+	Method    string `json:"method,omitempty"`
+	Interface string `json:"interface,omitempty"`
+	Address   string `json:"address,omitempty"`
+	MTU       uint16 `json:"mtu,omitempty"`
 }
 
 type ProxyConfig struct {
-	Method   string
-	URL      string
-	Servers  []string
-	Excludes []string
+	Method   string   `json:"method,omitempty"`
+	URL      string   `json:"url,omitempty"`
+	Servers  []string `json:"servers,omitempty"`
+	Excludes []string `json:"excludes,omitempty"`
 }
 
 type Provider struct {
-	Host   string
-	Domain string
-	Name   string
-	Type   string
+	Host   string `json:"host,omitempty"`
+	Domain string `json:"domain,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Type   string `json:"type,omitempty"`
 }
 
 type Service struct {
-	Path        dbus.ObjectPath
-	Name        string
-	Type        string
-	State       string
-	Error       string
-	Security    []string
-	Strength    uint8
-	Favorite    bool
-	AutoConnect bool
-	Immutable   bool
-	Roaming     bool
+	Path        dbus.ObjectPath `json:"path,omitempty"`
+	Name        string          `json:"name,omitempty"`
+	Type        string          `json:"type,omitempty"`
+	State       string          `json:"state,omitempty"`
+	Error       string          `json:"error,omitempty"`
+	Security    []string        `json:"security,omitempty"`
+	Strength    uint8           `json:"strength,omitempty"`
+	Favorite    bool            `json:"favorite,omitempty"`
+	AutoConnect bool            `json:"autoconnect,omitempty"`
+	Immutable   bool            `json:"immutable,omitempty"`
+	Roaming     bool            `json:"roaming,omitempty"`
 
-	Ethernet           EthConfig
-	IPv4               IPv4Config
-	IPv4Configuration  IPv4Config
-	IPv6               IPv6Config
-	IPv6Configuration  IPv6Config
-	Proxy              ProxyConfig
-	ProxyConfiguration ProxyConfig
-	Provider           Provider
+	Ethernet           EthConfig   `json:"ethernet,omitempty"`
+	IPv4               IPv4Config  `json:"ipv4,omitempty"`
+	IPv4Configuration  IPv4Config  `json:"ipv4_configuration,omitempty"`
+	IPv6               IPv6Config  `json:"ipv6,omitempty"`
+	IPv6Configuration  IPv6Config  `json:"ipv6_configuration,omitempty"`
+	Proxy              ProxyConfig `json:"proxy,omitempty"`
+	ProxyConfiguration ProxyConfig `json:"proxy_configuration,omitempty"`
+	Provider           Provider    `json:"provider,omitempty"`
 
-	Domains                  []string
-	DomainsConfiguration     []string
-	Nameservers              []string
-	NameserversConfiguration []string
-	Timeservers              []string
-	TimeserversConfiguration []string
+	Domains                  []string `json:"domains,omitempty"`
+	DomainsConfiguration     []string `json:"domains_configuration,omitempty"`
+	Nameservers              []string `json:"nameservers,omitempty"`
+	NameserversConfiguration []string `json:"nameservers_configuration,omitempty"`
+	Timeservers              []string `json:"timeservers,omitempty"`
+	TimeserversConfiguration []string `json:"timeservers_configuration,omitempty"`
 }
 
 func (s *Service) Connect(psk string) error {
