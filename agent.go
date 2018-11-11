@@ -17,8 +17,8 @@ type Agent struct {
 
 func NewAgent(psk string) *Agent {
 	agent := &Agent{
-		Name:       "com.develboard.webadmin",
-		Path:       "/com/develboard/webadmin/Agent",
+		Name:       "net.gonnman",
+		Path:       "/net/connman/Agent",
 		Interface:  "net.connman.Agent",
 		Passphrase: psk,
 	}
