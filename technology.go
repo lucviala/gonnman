@@ -53,12 +53,10 @@ func (t *Technology) EnableTethering(ssid string, psk string) error {
 	if len(ssid) > 0 {
 		log.Printf("Setting up TetheringIdentifier: %v\n", ssid)
 		db.Set("TetheringIdentifier", ssid)
-		log.Printf("Setting up TetheringIdentifier: Successfully\n")
 	}
 	if len(psk) > 8 && len(psk) < 64 {
 		log.Printf("Setting up TetheringPassphrase: %v\n", psk)
 		db.Set("TetheringPassphrase", psk)
-		log.Printf("Setting up TetheringPassphrase: Successfully\n")
 	} else {
 		return fmt.Errorf("Passphrase too short or too long: %v", psk)
 	}
