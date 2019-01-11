@@ -72,7 +72,7 @@ type Service struct {
 	TimeserversConfiguration []string `json:"timeservers_configuration,omitempty"`
 }
 
-func (s *Service) Connect(psk string) error {
+func (s *Service) Connect(ssid, psk string) error {
 	db, err := DBusService(s.Path)
 	if err != nil {
 		return err
@@ -91,7 +91,13 @@ func (s *Service) Connect(psk string) error {
 		return err
 	}
 
-	ag := NewAgent(psk)
+	var ag *Agent
+	if s.Name == "" && ssid != "" {
+		ag = NewAgent(ssid, psk)
+	} else {
+		ag = NewAgent("", psk)
+	}
+
 	if ag == nil {
 		return fmt.Errorf("Could not spawn a new agent\n")
 	}

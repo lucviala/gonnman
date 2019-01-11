@@ -9,17 +9,19 @@ import (
 )
 
 type Agent struct {
-	Name       string
+	Service    string
 	Path       dbus.ObjectPath
 	Interface  string
+	Name       string
 	Passphrase string
 }
 
-func NewAgent(psk string) *Agent {
+func NewAgent(ssid, psk string) *Agent {
 	agent := &Agent{
-		Name:       "net.gonnman",
+		Service:    "net.gonnman",
 		Path:       "/net/connman/Agent",
 		Interface:  "net.connman.Agent",
+		Name:       ssid,
 		Passphrase: psk,
 	}
 
@@ -29,7 +31,7 @@ func NewAgent(psk string) *Agent {
 		return nil
 	}
 
-	reply, err := conn.RequestName(agent.Name, dbus.NameFlagDoNotQueue)
+	reply, err := conn.RequestName(agent.Service, dbus.NameFlagDoNotQueue)
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -49,7 +51,7 @@ func (a *Agent) Destroy() error {
 		return err
 	}
 
-	reply, err := conn.ReleaseName(a.Name)
+	reply, err := conn.ReleaseName(a.Service)
 	if err != nil {
 		return err
 	}
@@ -62,9 +64,18 @@ func (a *Agent) Destroy() error {
 }
 
 func (a *Agent) RequestInput(service dbus.ObjectPath, rq map[string]dbus.Variant) (map[string]dbus.Variant, *dbus.Error) {
-	return map[string]dbus.Variant{
-		"Passphrase": dbus.MakeVariant(a.Passphrase),
-	}, nil
+	var in map[string]dbus.Variant
+	if a.Name != "" {
+		in = map[string]dbus.Variant{
+			"Name":       dbus.MakeVariant(a.Name),
+			"Passphrase": dbus.MakeVariant(a.Passphrase),
+		}
+	} else {
+		in = map[string]dbus.Variant{
+			"Passphrase": dbus.MakeVariant(a.Passphrase),
+		}
+	}
+	return in, nil
 }
 
 func (a *Agent) ReportError(service dbus.ObjectPath, err string) *dbus.Error {
