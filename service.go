@@ -70,6 +70,9 @@ type Service struct {
 	NameserversConfiguration []string `json:"nameservers_configuration,omitempty"`
 	Timeservers              []string `json:"timeservers,omitempty"`
 	TimeserversConfiguration []string `json:"timeservers_configuration,omitempty"`
+
+	MDns              bool `json:"mdns,omitempty"`
+	MDnsConfiguration bool `json:"mdns_configuration,omitempty"`
 }
 
 func (s *Service) Connect(ssid, psk string) error {
