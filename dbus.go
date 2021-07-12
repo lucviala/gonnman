@@ -9,6 +9,8 @@ import (
 	"github.com/godbus/dbus"
 )
 
+const tagName = "dbus"
+
 type DBusInterface struct {
 	Connection *dbus.Conn
 	Object     dbus.BusObject
@@ -92,8 +94,19 @@ func DBusTechnology(tech dbus.ObjectPath) (*DBusInterface, error) {
 func setField(dst interface{}, key string, val dbus.Variant) error {
 	key = strings.Replace(key, ".", "", -1)
 
-	sv := reflect.ValueOf(dst).Elem()
-	sfv := sv.FieldByName(key)
+	sv := reflect.ValueOf(dst)
+	st := sv.Type().Elem()
+
+	sfv := sv.Elem().FieldByName(key)
+
+	if !sfv.IsValid() {
+		for i := 0; i < st.NumField(); i++ {
+			if key == st.Field(i).Tag.Get(tagName) {
+				sfv = sv.Elem().Field(i)
+				break
+			}
+		}
+	}
 
 	if !sfv.IsValid() {
 		return fmt.Errorf("No such field %s in structure", key)
@@ -104,6 +117,7 @@ func setField(dst interface{}, key string, val dbus.Variant) error {
 	}
 
 	sft := sfv.Type()
+
 	v := reflect.ValueOf(val.Value())
 	vt := reflect.TypeOf(val.Value())
 

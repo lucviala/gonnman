@@ -50,10 +50,10 @@ type Service struct {
 	Error       string          `json:"error,omitempty"`
 	Security    []string        `json:"security,omitempty"`
 	Strength    uint8           `json:"strength,omitempty"`
-	Favorite    bool            `json:"favorite,omitempty"`
-	AutoConnect bool            `json:"autoconnect,omitempty"`
-	Immutable   bool            `json:"immutable,omitempty"`
-	Roaming     bool            `json:"roaming,omitempty"`
+	Favorite    bool            `json:"favorite"`
+	AutoConnect bool            `json:"autoconnect"`
+	Immutable   bool            `json:"immutable"`
+	Roaming     bool            `json:"roaming"`
 
 	Ethernet           EthConfig   `json:"ethernet,omitempty"`
 	IPv4               IPv4Config  `json:"ipv4,omitempty"`
@@ -71,8 +71,8 @@ type Service struct {
 	Timeservers              []string `json:"timeservers,omitempty"`
 	TimeserversConfiguration []string `json:"timeservers_configuration,omitempty"`
 
-	MDns              bool `json:"mdns,omitempty"`
-	MDnsConfiguration bool `json:"mdns_configuration,omitempty"`
+	MDNS              bool `dbus:"mDNS" json:"mdns"`
+	MDNSConfiguration bool `dbus:"mDNSConfiguration" json:"mdns_configuration"`
 }
 
 func (s *Service) Connect(ssid, psk string) error {
