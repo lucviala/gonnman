@@ -93,20 +93,10 @@ func DBusTechnology(tech dbus.ObjectPath) (*DBusInterface, error) {
 
 func setField(dst interface{}, key string, val dbus.Variant) error {
 	key = strings.Replace(key, ".", "", -1)
+	key = strings.Title(key)
 
-	sv := reflect.ValueOf(dst)
-	st := sv.Type().Elem()
-
-	sfv := sv.Elem().FieldByName(key)
-
-	if !sfv.IsValid() {
-		for i := 0; i < st.NumField(); i++ {
-			if key == st.Field(i).Tag.Get(tagName) {
-				sfv = sv.Elem().Field(i)
-				break
-			}
-		}
-	}
+	sv := reflect.ValueOf(dst).Elem()
+	sfv := sv.FieldByName(key)
 
 	if !sfv.IsValid() {
 		return fmt.Errorf("No such field %s in structure", key)
